@@ -109,7 +109,7 @@ window.onload = function(){
     console.log(coin_name);
     $("#main_title").text(coin_name);
 
-    starting_price = Math.random() * wallet_current;
+    starting_price = Math.random() * (wallet_current/2);
 
     last_return = 1;
     last_price = starting_price;
@@ -132,6 +132,7 @@ function buy(amount){
         wallet_current -= transaction_price;
         coins_owned += amount;
         text_update();
+
     }else{
         $('#wallet').addClass('bad-input');
         $('#wallet').one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
