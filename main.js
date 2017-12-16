@@ -29,6 +29,7 @@ var last_price = null;
 var last_return = null;
 var min_price = null;
 var max_price = null;
+var up = null;
 
 function updator(timestamp){
     
@@ -56,7 +57,7 @@ function updator(timestamp){
         var old_price = last_price;
         last_return = return_value;
         last_price = new_price_value;
-    
+        last_price >= old_price ? up = true : up = false;;
         returns_list.push(last_return);
         price_list.push(last_price);
 
@@ -77,7 +78,8 @@ function updator(timestamp){
 function text_update(){
     var display_string = `Price: ${Math.round(last_price * 100) / 100} \nWallet: ${wallet_current} \nCoins: ${coins_owned} with value: ${coins_value} `;
     $("#price").text(`$${Math.round(last_price * 100) / 100}`);
-    $("#wallet").text(`Wallet: ${Math.round(wallet_current * 100) / 100}`);
+    $("#price").css({color: up ? "green" : "red"});
+    $("#wallet").text(`Cash: ${Math.round(wallet_current * 100) / 100}`);
     $("#coins").text(`Coins: ${Math.round(coins_owned * 100) / 100}`);
     $("#value").text(`Profit: ${Math.round(profit * 100) / 100}`);
 }
