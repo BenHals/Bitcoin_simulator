@@ -27,10 +27,20 @@
                     
                 </div>
                 <div id="buy">
-                    <button class="btn btn-default btn-block" onclick="buy(1)">BUY</button>
+                    <div class="input-group">
+                        <input id="buy_amount" type="number" class="form-control" value="1">
+                        <span class="input-group-btn">
+                            <button class="btn btn-secondary" type="button" onclick="buy()">BUY</button>
+                        </span>
+                    </div>
                 </div>
                 <div id="sell">
-                    <button class="btn btn-default btn-block" onclick="sell(1)">SELL</button>
+                    <div class="input-group">
+                        <input id="sell_amount" type="number" class="form-control" value="1">
+                        <span class="input-group-btn">
+                            <button class="btn btn-secondary" type="button" onclick="sell()">SELL</button>
+                        </span>
+                    </div>
                 </div>
                 <div id="coins">
                         

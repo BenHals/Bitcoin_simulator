@@ -127,6 +127,10 @@ window.onload = function(){
 };
 
 function buy(amount){
+    if(!amount){
+        var input = $("#buy_amount");
+        amount = parseFloat(input.val());
+    } 
     var transaction_price = amount * last_price;
     if(transaction_price <= wallet_current){
         wallet_current -= transaction_price;
@@ -145,6 +149,10 @@ function buy(amount){
 }
 
 function sell(amount){
+    if(!amount){
+        var input = $("#sell_amount");
+        amount = parseFloat(input.val());
+    } 
     var transaction_price = amount * last_price;
     if(amount <= coins_owned){
         wallet_current += transaction_price;
