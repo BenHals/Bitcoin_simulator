@@ -5,6 +5,7 @@ var b_ctx = null
 var f_canvas = null;
 var f_ctx = null;
 
+var num_nodes = 100;
 var coin_name = null;
 var starting_price = null;
 var current_price = null;
@@ -61,8 +62,9 @@ function updator(timestamp){
         returns_list.push(last_return);
         price_list.push(last_price);
 
-        var new_min = Math.min(...price_list, 0);
-        var new_max = Math.max(...price_list, 0);
+        var on_screen = price_list.slice(Math.max(price_list.length - num_nodes, 0), price_list.length);
+        var new_min = Math.min(...on_screen, 0);
+        var new_max = Math.max(...on_screen, 0);
         text_update();
         update_price_graph(graph, last_price, old_price, new_max, new_min, min_price, max_price );
         min_price = new_min;
@@ -119,7 +121,7 @@ window.onload = function(){
     text_update();
 
     var bounds = $("#graph")[0].getBoundingClientRect();
-    graph = create_price_graph(100, bounds, starting_price);
+    graph = create_price_graph(num_nodes, bounds, starting_price);
     update_price_graph(graph, last_price, 0, last_price, 0);
     //draw_graph(f_ctx, graph, 0);
 
@@ -247,8 +249,10 @@ function update_price_graph(graph, new_price, last_price, max_price, min_price, 
         var end_x2 = initial_x2 - graph.length;
         if(initial_x2 <= graph.bounds.left){
             // I.E it has reached the left hand side
-            initial_x1 = bounds.right;
-            initial_x2 = bounds.right + graph.length;
+            // initial_x1 = bounds.right;
+            // initial_x2 = bounds.right + graph.length;
+            initial_x1 = initial_x2 + bounds.width;
+            initial_x2 = initial_x1 + graph.length;
             end_x1 = initial_x1 - graph.length;
             end_x2 = initial_x2 - graph.length;
             node[0].y[3] = last_price;
