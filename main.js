@@ -97,7 +97,35 @@ function text_update(){
     $("#price").text(`$${Math.round(coin.last_price * 100) / 100}`);
     $("#price").css({color: coin.up ? "green" : "red"});
     $("#wallet").text(`Cash: ${Math.round(wallet_current * 100) / 100}`);
-    $("#coins").text(`Coins: ${Math.round(coin.owned * 100) / 100}`);
+    $("#coins").empty();
+    for(var c = 0; c < Object.keys(coin_log).length; c++){
+        var c_obj = coin_log[Object.keys(coin_log)[c]];
+        var div_string = 
+        `<div class="coin-panel${c_obj.name == selected_coin_name ? " selected-coin-panel" : ""}" id="${c_obj.ticker+c}" value="${c_obj.name}">
+            <div class="coin-panel-head"><p>${c_obj.ticker}</p></div>
+            <div class="coin-panel-graph" id="${c_obj.ticker+c+"price"}"><span>${Math.round(c_obj.last_price)}</span></div>
+            <div class="coin-panel-body"><span>${Math.round(c_obj.owned*100)/100}</span></div>
+        </div>`;
+        $("#coins").append(div_string);
+        $("#"+c_obj.ticker+c+"price").css("color", c_obj.up ? "green" : "red");
+        $("#"+c_obj.ticker+c).click(function(){
+                window.selected_coin_name = $(this).attr('value');
+                window.text_update();
+            }     
+        )
+    }
+    if(Object.keys(coin_log).length < 15){
+        var div_string = 
+        `<div class="coin-panel text-center" id="new-coin">
+            <span id="new-coin-glyph" class="glyphicon glyphicon-plus"></span>
+        </div>`;
+        $("#coins").append(div_string);
+        $("#new-coin").click(function(){
+                window.selected_coin_name = window.new_coin();
+                window.text_update();
+            }     
+        )
+    }
     $("#value").text(`Profit: ${Math.round(profit * 100) / 100}`);
     
 }
@@ -105,7 +133,10 @@ function text_update(){
 window.onload = function(){
     document.onkeypress = function(e){
 		e =e || window.event;
-		if(e.keyCode == 32) selected_coin_name = Object.keys(coin_log)[Math.floor(Math.random() * Object.keys(coin_log).length)];
+		if(e.keyCode == 32) {
+            selected_coin_name = Object.keys(coin_log)[Math.floor(Math.random() * Object.keys(coin_log).length)];
+            text_update();
+        }
 	}
     container = document.getElementById("main_display");
     container_bounding = this.container.getBoundingClientRect();
@@ -128,6 +159,9 @@ window.onload = function(){
     this.container.appendChild(f_canvas);
     new_coin();
     new_coin();
+    new_coin();
+
+
     selected_coin_name = new_coin();
     text_update();
     var coin = coin_log[selected_coin_name];
@@ -135,7 +169,6 @@ window.onload = function(){
     graph = create_price_graph(num_nodes, bounds, coin.last_price);
     update_price_graph(graph, coin);
     //draw_graph(f_ctx, graph, 0);
-
     requestAnimationFrame(updator);
 };
 
@@ -236,7 +269,7 @@ function coin_name_gen(){
     if(mid_roll >= mid_extra_chance && end_roll < end_extra_chance) name.push(" " + word_from_list(coin_extras_list));
 
     var name_string = name.join('');
-    var ticker = name.reduce((a, c) => a+c.slice(0,1), '');
+    var ticker = name.reduce((a, c) => a+c.trim().slice(0,1), '');
     return [name_string, ticker];
 }
 
