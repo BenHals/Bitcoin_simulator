@@ -27,7 +27,7 @@
     grid-row-end: 2;
     align-self: center;
 
-    font-size: 10em;
+    font-size: 20vmin;
     font-family: 'Wire One';
 }
 
@@ -60,7 +60,7 @@
 
 #price{
     grid-area: price;
-    font-size: 5em;
+    font-size: 10vmin;
     font-family: 'Roboto';
 }
 #graph{
@@ -96,12 +96,12 @@
 }
 #wallet{
     grid-area: wallet;
-    font-size: 2em;
+    font-size: 4vmin;
     font-family: 'Roboto';
 }
 #value{
     grid-area: value;
-    font-size: 5em;
+    font-size: 7vmin;
     font-family: 'Roboto';
 }
 
